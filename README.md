@@ -49,3 +49,15 @@ De gebouwde appmap en testbeelden staan niet in de repository. De bouwstap gebru
 De app vraagt alleen limietgegevens op via de lokale [Codex app-server](https://learn.chatgpt.com/docs/app-server). Er worden geen AI-prompts uitgevoerd. De app leest zelf geen wachtwoorden of tokens en bewaart geen verbruikshistorie. Bij verbindingsverlies blijven de laatste meting, het tijdstip en een foutmelding zichtbaar.
 
 Dit is een persoonlijk project en geen officiële OpenAI-app.
+
+## Nederlands / English
+
+Gebruik de vlagknoppen **NL** en **EN** bovenin. De hele interface schakelt direct mee, inclusief resetdatums, aftellers, knoppen en foutmeldingen. Je keuze wordt lokaal onthouden na het herstarten. Nederlands is de standaardtaal.
+
+Use the **NL** and **EN** flag buttons at the top to switch the entire interface, including reset dates, countdowns, controls and errors. Your choice is saved locally across restarts. Dutch is the default language.
+
+### Een taal toevoegen / Adding another language
+
+Fork dit project en voeg een vertaling toe aan `languages.js` met dezelfde sleutels als `en`. Geef `locale`, `name` en `hourUnit` op. Voeg in `index.html` een knop met `data-language="jouw-taalcode"` toe. Voeg eventuele vlagbestanden ook toe aan de bestandenlijst in `build-windows.cjs`. Ontbrekende teksten vallen terug op Engels.
+
+To add a language in your fork, copy the English dictionary in `languages.js`, translate its values and set `locale`, `name` and `hourUnit`. Add a button with the matching `data-language` code in `index.html`. Include any new flag asset in `build-windows.cjs`. Missing strings fall back to English. No inactive “other language” button is shown.

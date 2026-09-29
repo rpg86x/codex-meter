@@ -1,8 +1,18 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"><title>Codex Meter</title><link rel="stylesheet" href="style.css"></head><body><main>
-<header><img src="logo.png" alt="" width="48" height="48" style="flex:none;object-fit:contain;background:#e7f3eb;border-radius:12px"><div><h1>Codex Meter</h1><p>Jouw ruimte om te bouwen</p></div><span id="plan" class="badge">—</span></header>
-<div class="status"><span id="dot"></span><span id="status">Verbinding maken…</span><button id="refresh" title="Nu vernieuwen">↻</button></div>
-
-<div class="section-title">Nog beschikbaar in je abonnement</div><div id="buckets"><section class="card">Je limieten worden opgehaald.</section></div>
-<section class="hero"><div class="eyebrow">EXTRA CREDITTEGOED</div><div id="credits">—</div><p id="creditnote">Tegoed ophalen…</p></section><p class="explanation">Je abonnementsruimte wordt als percentage gemeten. Dit is geen vast aantal berichten of eurobedrag.</p><p id="error" role="alert" hidden></p><footer><p id="updated">Nog geen meting</p><p>Automatisch elke 30 seconden · cijfers van Codex</p><div class="controls"><button id="pin">Bovenop houden</button><button id="size">Half scherm</button></div><p class="small">Abonnementsruimte en extra credits zijn afzonderlijke tegoeden.</p></footer>
-</main><script src="renderer.js"></script></body></html>
+<!doctype html>
+<html lang="nl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<title>Codex Meter</title><link rel="stylesheet" href="style.css">
+</head><body><main>
+<header><img src="logo.png" alt="" width="48" height="48" style="flex:none;object-fit:contain;background:#e7f3eb;border-radius:12px"><div><h1>Codex Meter</h1><p data-i18n="tagline">Jouw ruimte om te bouwen</p></div><span id="plan" class="badge">—</span></header>
+<div id="languages" class="languages" role="group" aria-label="Taal kiezen">
+<button type="button" data-language="nl" lang="nl" title="Nederlands" aria-label="Nederlands" aria-pressed="true"><img src="flag-nl.svg" alt="" width="24" height="16">NL</button>
+<button type="button" data-language="en" lang="en" title="English" aria-label="English" aria-pressed="false"><img src="flag-en.svg" alt="" width="24" height="16">EN</button>
+</div>
+<div class="status"><span id="dot"></span><span id="status">Verbinding maken…</span><button id="refresh" title="Nu vernieuwen" aria-label="Nu vernieuwen">↻</button></div>
+<div class="section-title" data-i18n="allowance">Nog beschikbaar in je abonnement</div><div id="buckets"><section class="card" data-i18n="loading">Je limieten worden opgehaald.</section></div>
+<section class="hero"><div class="eyebrow" data-i18n="creditsTitle">EXTRA CREDITTEGOED</div><div id="credits">—</div><p id="creditnote">Tegoed ophalen…</p></section>
+<p class="explanation" data-i18n="explanation">Je abonnementsruimte wordt als percentage gemeten. Dit is geen vast aantal berichten of eurobedrag.</p><p id="error" role="alert" hidden></p>
+<footer><p id="updated">Nog geen meting</p><p data-i18n="automatic">Automatisch elke 30 seconden · cijfers van Codex</p><div class="controls"><button id="pin">Bovenop houden</button><button id="size">Half scherm</button></div><p class="small" data-i18n="separate">Abonnementsruimte en extra credits zijn afzonderlijke tegoeden.</p></footer>
+</main><script src="languages.js"></script><script src="renderer.js"></script></body></html>
 
