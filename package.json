@@ -1,0 +1,15 @@
+{
+  "name": "codex-meter",
+  "version": "1.0.0",
+  "description": "Compacte Windows-app voor Codex-tegoed, verbruik en resetmomenten",
+  "main": "main.cjs",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check main.cjs && node --check client.cjs && node --check preload.cjs && node --check renderer.js && node --check build-windows.cjs",
+    "build:windows": "node build-windows.cjs"
+  },
+  "devDependencies": {
+    "electron": "44.4.5"
+  }
+}

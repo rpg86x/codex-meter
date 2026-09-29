@@ -1,0 +1,14 @@
+node_modules/
+windows/
+dist/
+release/
+*.zip
+*.log
+*.lnk
+preview.png
+smoke-result.json
+smoke-test-result.json
+.env
+.env.*
+.codex/
+auth.json
