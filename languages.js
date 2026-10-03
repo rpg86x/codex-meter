@@ -2,6 +2,7 @@
 const meterLanguages = {
   nl: {
     locale: 'nl-NL', name: 'Nederlands', hourUnit: 'u',
+    trayOpen: 'Codex Meter openen', trayQuit: 'Afsluiten', trayHide: 'Naar systeemvak', trayHint: 'Met × verberg je het venster. Codex Meter blijft actief bij de klok.',
     tagline: 'Jouw ruimte om te bouwen', language: 'Taal kiezen', refresh: 'Nu vernieuwen',
     allowance: 'Nog beschikbaar in je abonnement', loading: 'Je limieten worden opgehaald.',
     creditsTitle: 'EXTRA CREDITTEGOED', creditsLoading: 'Tegoed ophalen…',
@@ -22,6 +23,7 @@ const meterLanguages = {
   },
   en: {
     locale: 'en-GB', name: 'English', hourUnit: 'h',
+    trayOpen: 'Open Codex Meter', trayQuit: 'Quit', trayHide: 'Hide to tray', trayHint: 'Closing the window keeps Codex Meter running in the system tray.',
     tagline: 'Your room to build', language: 'Choose language', refresh: 'Refresh now',
     allowance: 'Remaining in your plan', loading: 'Fetching your limits.',
     creditsTitle: 'EXTRA CREDIT BALANCE', creditsLoading: 'Fetching balance…',

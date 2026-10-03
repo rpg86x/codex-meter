@@ -1,5 +1,11 @@
 # Codex Meter
 
+## Systeemvak / System tray
+
+Codex Meter staat bij de Windows-klok (eventueel onder het pijltje voor verborgen pictogrammen). Sluit het venster met × of kies 'Naar systeemvak': de app blijft bijwerken. Klik op het icoon om het venster te openen; rechtsklik voor vernieuwen of volledig afsluiten. Automatisch starten met Windows wordt niet aangezet.
+
+Codex Meter appears near the Windows clock, possibly in the hidden-icons menu. Close the window or choose 'Hide to tray' to keep it running in the background. Click the icon to reopen, or right-click to refresh or quit. Windows autostart is not enabled.
+
 Start `Codex Meter.exe` in de map `windows`. Geen installatie nodig; bewaar de hele map bij elkaar.
 
 Een smal Windows-venster met actuele abonnementslimieten, credittegoed en resetmomenten. De knop Half scherm zet het venster rechts op de helft van je scherm. Bovenop houden laat het zichtbaar boven andere vensters.

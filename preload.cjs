@@ -1,2 +1,2 @@
 const {contextBridge,ipcRenderer}=require('electron');
-contextBridge.exposeInMainWorld('meter',{state:()=>ipcRenderer.invoke('state'),refresh:()=>ipcRenderer.invoke('refresh'),pin:()=>ipcRenderer.invoke('pin'),size:half=>ipcRenderer.invoke('size',half),subscribe:fn=>ipcRenderer.on('state',(_,value)=>fn(value))});
+contextBridge.exposeInMainWorld('meter',{state:()=>ipcRenderer.invoke('state'),refresh:()=>ipcRenderer.invoke('refresh'),pin:()=>ipcRenderer.invoke('pin'),size:half=>ipcRenderer.invoke('size',half),setLanguage:language=>ipcRenderer.invoke('tray-language',language),hide:()=>ipcRenderer.invoke('tray-hide'),subscribe:fn=>ipcRenderer.on('state',(_,value)=>fn(value))});

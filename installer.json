@@ -1,0 +1,23 @@
+{
+  "appId": "com.codexmeter.desktop",
+  "productName": "Codex Meter",
+  "directories": { "output": "release" },
+  "win": {
+    "target": [{ "target": "nsis", "arch": ["x64"] }],
+    "icon": "windows/codex-meter.ico",
+    "signAndEditExecutable": false
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Codex Meter",
+    "runAfterFinish": false,
+    "deleteAppDataOnUninstall": false,
+    "installerLanguages": ["nl_NL", "en_US"],
+    "displayLanguageSelector": true,
+    "artifactName": "Codex-Meter-Setup-${version}-x64.exe"
+  }
+}

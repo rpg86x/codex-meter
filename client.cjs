@@ -4,8 +4,8 @@ const path=require('node:path');
 class Client {
  constructor(){this.next=0;this.pending=new Map();}
  async start(){
-  const exe=process.env.CODEX_METER_CLI||path.join(process.env.LOCALAPPDATA,'Programs','OpenAI','Codex','bin','codex.exe');
-  this.proc=spawn(exe,['app-server','--stdio'],{windowsHide:true,stdio:['pipe','pipe','pipe'],env:{...process.env,HOME:process.env.USERPROFILE}});
+  const exe=process.env.CODEX_METER_CLI||(process.platform==='win32'?path.join(process.env.LOCALAPPDATA,'Programs','OpenAI','Codex','bin','codex.exe'):'codex');
+  this.proc=spawn(exe,['app-server','--stdio'],{windowsHide:true,stdio:['pipe','pipe','pipe'],env:process.platform==='win32'?{...process.env,HOME:process.env.USERPROFILE}:process.env});
   const fail=()=>{for(const p of this.pending.values()){clearTimeout(p.timer);p.reject(new Error('Codex-verbinding gesloten. Controleer of Codex is geïnstalleerd en aangemeld.'));}this.pending.clear();this.dead=true;};
   this.proc.on('error',fail);this.proc.on('exit',fail);this.proc.stdin.on('error',fail);this.proc.stderr.resume();
   createInterface({input:this.proc.stdout}).on('line',line=>{try{const msg=JSON.parse(line);const p=this.pending.get(msg.id);if(p){clearTimeout(p.timer);this.pending.delete(msg.id);msg.error?p.reject(new Error(msg.error.message)):p.resolve(msg.result);}}catch{}});

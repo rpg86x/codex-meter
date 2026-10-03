@@ -1,0 +1,56 @@
+name: Windows installer
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [package.json]
+permissions:
+  contents: write
+concurrency:
+  group: windows-release
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install build dependencies
+        run: npm install --no-audit --no-fund
+      - name: Check JavaScript
+        run: npm run check
+      - name: Build installer
+        run: npm run build:installer
+      - name: Checksums
+        shell: pwsh
+        run: |
+          $lines = Get-ChildItem release/*Setup*.exe | ForEach-Object { (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower() + '  ' + $_.Name }
+          $lines | Set-Content release/SHA256SUMS.txt -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Codex-Meter-Windows
+          path: |
+            release/*Setup*.exe
+            release/SHA256SUMS.txt
+          if-no-files-found: error
+      - name: Publish download
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $tag = "v$version"
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) { throw "Release $tag bestaat al. Verhoog eerst de versie." }
+          @'
+          Download Codex-Meter-Setup-VERSION-x64.exe onder Assets en volg de installatie.
+
+          Windows x64. Node.js is niet nodig. De Codex-desktopapp en een actieve ChatGPT-aanmelding zijn vereist.
+          Nederlands en Engels; systeemvakicoon; snelkoppelingen op het bureaublad en in het Startmenu.
+          Deze installer is niet digitaal ondertekend. SHA256SUMS.txt bevat de controlehash.
+          '@.Replace('VERSION', $version) | Set-Content release/notes.md -Encoding utf8
+          $installer = "release/Codex-Meter-Setup-$version-x64.exe"
+          gh release create $tag $installer release/SHA256SUMS.txt --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "Codex Meter $version" --notes-file release/notes.md
+          if ($LASTEXITCODE -ne 0) { throw 'Publiceren mislukt' }

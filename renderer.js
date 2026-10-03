@@ -30,6 +30,7 @@ function updateControls() {
 function setLanguage(next) {
   if (!Object.hasOwn(meterLanguages, next)) return;
   language = next;
+  window.meter.setLanguage?.(next).catch(() => {});
   try { localStorage.setItem('codex-meter-language', next); } catch {}
   document.documentElement.lang = next;
   document.querySelectorAll('[data-i18n]').forEach(e => { e.textContent = t(e.dataset.i18n); });
@@ -121,6 +122,7 @@ $('pin').onclick = async () => {
 $('size').onclick = async () => {
   try { await window.meter.size(!half); half = !half; updateControls(); } catch { actionFailed(); }
 };
+$('hide').onclick = () => window.meter.hide().catch(actionFailed);
 document.querySelectorAll('[data-language]').forEach(button => { button.onclick = () => setLanguage(button.dataset.language); });
 setLanguage(language);
 window.meter.subscribe(render);

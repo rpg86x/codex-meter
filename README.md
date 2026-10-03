@@ -10,10 +10,19 @@ Een compacte Windows-app die laat zien hoeveel Codex-ruimte je nog hebt en wanne
 - De datum en tijd van de reset, met een afteller.
 - Extra credittegoed, wanneer Codex dat beschikbaar stelt.
 - Een smal venster, een knop voor half scherm en een optie om bovenop te blijven.
+- Een systeemvakicoon bij de Windows-klok: klik om te openen, rechtsklik voor vernieuwen of afsluiten. Het kruisje verbergt het venster; de metingen blijven doorlopen.
 
 De app ververst elke 30 seconden. De gegevens kunnen vanuit Codex vertraagd binnenkomen. Abonnementspercentages zijn geen vast aantal berichten of eurobedrag; extra credits worden afzonderlijk weergegeven.
 
-## Zelf starten
+## Windows downloaden
+
+[Download de Windows-installer](https://github.com/rpg86x/codex-meter/releases/latest)
+
+Download bij Assets het bestand `Codex-Meter-Setup-1.2.0-x64.exe`, open het en volg de installatie. Node.js is hiervoor niet nodig. Een geïnstalleerde Codex-desktopapp met actieve ChatGPT-aanmelding blijft vereist. De installer maakt snelkoppelingen in het Startmenu en op het bureaublad.
+
+De installer is niet digitaal ondertekend; Windows kan daarom een uitgeverswaarschuwing tonen.
+
+## Windows starten
 
 Vereist Windows 11, Node.js met npm en een geïnstalleerde Codex-desktopapp met een actieve ChatGPT-aanmelding.
 
@@ -61,3 +70,10 @@ Use the **NL** and **EN** flag buttons at the top to switch the entire interface
 Fork dit project en voeg een vertaling toe aan `languages.js` met dezelfde sleutels als `en`. Geef `locale`, `name` en `hourUnit` op. Voeg in `index.html` een knop met `data-language="jouw-taalcode"` toe. Voeg eventuele vlagbestanden ook toe aan de bestandenlijst in `build-windows.cjs`. Ontbrekende teksten vallen terug op Engels.
 
 To add a language in your fork, copy the English dictionary in `languages.js`, translate its values and set `locale`, `name` and `hourUnit`. Add a button with the matching `data-language` code in `index.html`. Include any new flag asset in `build-windows.cjs`. Missing strings fall back to English. No inactive “other language” button is shown.
+
+## Installer bouwen en publiceren
+
+Gebruik npm install en daarna npm run build:installer. Het installatiebestand staat in release.
+
+De GitHub Actions-workflow bouwt bij een wijziging van package.json op main of na handmatig starten. De workflow publiceert de installer en SHA256SUMS.txt als GitHub Release voor de versie uit package.json. Verhoog de versie voordat je een nieuwe release maakt. Dezelfde downloadlink kan ook op een andere website worden geplaatst.
+
