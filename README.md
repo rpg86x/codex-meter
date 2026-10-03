@@ -2,78 +2,85 @@
 
 <img src="logo.png" alt="Codex Meter logo" width="112">
 
-Een compacte Windows-app die laat zien hoeveel Codex-ruimte je nog hebt en wanneer je limieten worden gereset.
+A compact Windows app that shows your remaining Codex allowance, extra credits, and when your limits reset.
 
-## Wat je ziet
+## Download for Windows
 
-- Resterende abonnementsruimte per limiet, als percentage.
-- De datum en tijd van de reset, met een afteller.
-- Extra credittegoed, wanneer Codex dat beschikbaar stelt.
-- Een smal venster, een knop voor half scherm en een optie om bovenop te blijven.
-- Een systeemvakicoon bij de Windows-klok: klik om te openen, rechtsklik voor vernieuwen of afsluiten. Het kruisje verbergt het venster; de metingen blijven doorlopen.
+[Download the Windows installer](https://github.com/rpg86x/codex-meter/releases/latest)
 
-De app ververst elke 30 seconden. De gegevens kunnen vanuit Codex vertraagd binnenkomen. Abonnementspercentages zijn geen vast aantal berichten of eurobedrag; extra credits worden afzonderlijk weergegeven.
+Under **Assets**, download `Codex-Meter-Setup-1.2.0-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
 
-## Windows downloaden
+Requires Windows x64 and an installed Codex desktop app with an active ChatGPT sign-in. **Node.js is not required to use the installer.**
 
-[Download de Windows-installer](https://github.com/rpg86x/codex-meter/releases/latest)
+The installer is not digitally signed, so Windows may display an unknown-publisher warning.
 
-Download bij Assets het bestand `Codex-Meter-Setup-1.2.0-x64.exe`, open het en volg de installatie. Node.js is hiervoor niet nodig. Een geïnstalleerde Codex-desktopapp met actieve ChatGPT-aanmelding blijft vereist. De installer maakt snelkoppelingen in het Startmenu en op het bureaublad.
+## Features
 
-De installer is niet digitaal ondertekend; Windows kan daarom een uitgeverswaarschuwing tonen.
+- Remaining subscription allowance for each limit, shown as a percentage.
+- Reset dates and times with a countdown.
+- Extra credit balance, when provided by Codex.
+- A compact window, a half-screen mode, and an always-on-top option.
+- A system tray icon next to the Windows clock: click to open, or right-click to refresh or quit.
+- Dutch and English interface options, with your choice saved between sessions.
 
-## Windows starten
+Closing the window hides it in the system tray while readings continue to update. The app refreshes every 30 seconds. Data from Codex may arrive with a delay. Subscription percentages do not represent a fixed number of messages or a monetary amount; extra credits are shown separately.
 
-Vereist Windows 11, Node.js met npm en een geïnstalleerde Codex-desktopapp met een actieve ChatGPT-aanmelding.
+## Run from source
+
+Requires Windows 11, Node.js with npm, and an installed Codex desktop app with an active ChatGPT sign-in.
 
 ```powershell
 npm install
 npm start
 ```
 
-Standaard zoekt de app `codex.exe` onder `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin`. Voor een andere installatie kun je in PowerShell vóór het starten een pad instellen:
+By default, the app looks for `codex.exe` under `%LOCALAPPDATA%\Programs\OpenAI\Codex\bin`. For a different installation, set the path in PowerShell before starting:
 
 ```powershell
-$env:CODEX_METER_CLI = 'C:\pad\naar\codex.exe'
+$env:CODEX_METER_CLI = 'C:\path\to\codex.exe'
 npm start
 ```
 
-## Een Windows-appmap bouwen
+## Build a Windows installer
 
 ```powershell
+npm install
 npm run check
+npm run build:installer
+```
+
+The installer is saved in `release`.
+
+To build a portable app folder instead:
+
+```powershell
 npm run build:windows
 ```
 
-Daarna staat `Codex Meter.exe` in de map `windows`. Bewaar die volledige map bij elkaar. Voor een bureaubladsnelkoppeling:
+Run `Codex Meter.exe` in the `windows` folder. Keep the entire folder together. To create a desktop shortcut:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\create-desktop-shortcut.ps1
 ```
 
-De gebouwde appmap en testbeelden staan niet in de repository. De bouwstap gebruikt Electron uit `node_modules` en behoudt diens meegeleverde licentiebestanden.
+Built app folders and test images are excluded from the repository. The build uses Electron from `node_modules` and preserves its bundled license files.
 
-## Gegevens en koppeling
+## Releases
 
-De app vraagt alleen limietgegevens op via de lokale [Codex app-server](https://learn.chatgpt.com/docs/app-server). Er worden geen AI-prompts uitgevoerd. De app leest zelf geen wachtwoorden of tokens en bewaart geen verbruikshistorie. Bij verbindingsverlies blijven de laatste meting, het tijdstip en een foutmelding zichtbaar.
+The GitHub Actions workflow builds an installer when `package.json` changes on `main`, or when started manually. It publishes the installer and `SHA256SUMS.txt` as a GitHub Release using the version in `package.json`. Increase the version before publishing a new release.
 
-Dit is een persoonlijk project en geen officiële OpenAI-app.
+You can link to [the latest release](https://github.com/rpg86x/codex-meter/releases/latest) from another website.
 
-## Nederlands / English
+## Data and connection
 
-Gebruik de vlagknoppen **NL** en **EN** bovenin. De hele interface schakelt direct mee, inclusief resetdatums, aftellers, knoppen en foutmeldingen. Je keuze wordt lokaal onthouden na het herstarten. Nederlands is de standaardtaal.
+The app requests limit data through the local [Codex app-server](https://learn.chatgpt.com/docs/app-server). It does not run AI prompts, read passwords or tokens itself, or store usage history. If the connection is lost, the last reading remains visible with its timestamp and an error message.
 
-Use the **NL** and **EN** flag buttons at the top to switch the entire interface, including reset dates, countdowns, controls and errors. Your choice is saved locally across restarts. Dutch is the default language.
+This is a personal project and is not an official OpenAI app.
 
-### Een taal toevoegen / Adding another language
+## Interface language
 
-Fork dit project en voeg een vertaling toe aan `languages.js` met dezelfde sleutels als `en`. Geef `locale`, `name` en `hourUnit` op. Voeg in `index.html` een knop met `data-language="jouw-taalcode"` toe. Voeg eventuele vlagbestanden ook toe aan de bestandenlijst in `build-windows.cjs`. Ontbrekende teksten vallen terug op Engels.
+Use the **NL** and **EN** flag buttons at the top to switch the entire interface, including reset dates, countdowns, controls, error messages, and the tray menu. Your choice is saved locally across restarts. Dutch is the default interface language.
 
-To add a language in your fork, copy the English dictionary in `languages.js`, translate its values and set `locale`, `name` and `hourUnit`. Add a button with the matching `data-language` code in `index.html`. Include any new flag asset in `build-windows.cjs`. Missing strings fall back to English. No inactive “other language” button is shown.
+### Add another language
 
-## Installer bouwen en publiceren
-
-Gebruik npm install en daarna npm run build:installer. Het installatiebestand staat in release.
-
-De GitHub Actions-workflow bouwt bij een wijziging van package.json op main of na handmatig starten. De workflow publiceert de installer en SHA256SUMS.txt als GitHub Release voor de versie uit package.json. Verhoog de versie voordat je een nieuwe release maakt. Dezelfde downloadlink kan ook op een andere website worden geplaatst.
-
+Fork this project and add a translation to `languages.js` using the same keys as `en`. Set `locale`, `name`, and `hourUnit`. Add a button in `index.html` with a matching `data-language` code. Include any new flag asset in the file list in `build-windows.cjs`. Missing translations fall back to English.

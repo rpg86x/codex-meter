@@ -1,0 +1,21 @@
+name: English project text
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/project-text.yml, .github/release-notes.md]
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          sed "s/VERSION/$VERSION/g" .github/release-notes.md > /tmp/codex-meter-release-notes.md
+          gh release edit "v$VERSION" --repo "$GITHUB_REPOSITORY" --notes-file /tmp/codex-meter-release-notes.md
