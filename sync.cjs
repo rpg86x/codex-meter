@@ -29,7 +29,7 @@ function parseCode(code) {
 }
 function makeCode(host,key) { return 'CM1.' + Buffer.from(JSON.stringify({host,port:PORT,key})).toString('base64url'); }
 function snapshot(state) {
-  const bucket = b => b ? { limitName:b.limitName,planType:b.planType,credits:b.credits ? {balance:b.credits.balance,unlimited:b.credits.unlimited,hasCredits:b.credits.hasCredits}:null,
+  const bucket = b => b ? { limitName:b.limitName,normalModelSlug:b.normalModelSlug,planType:b.planType,credits:b.credits ? {balance:b.credits.balance,unlimited:b.credits.unlimited,hasCredits:b.credits.hasCredits}:null,
     ...Object.fromEntries(['primary','secondary'].map(k=>[k,b[k] ? {usedPercent:b[k].usedPercent,windowDurationMins:b[k].windowDurationMins,resetsAt:b[k].resetsAt}:null])) }:null;
   return { updated:state.updated ?? null,error:state.error ? 'sync_source_error':null,
     data:state.data ? {rateLimits:bucket(state.data.rateLimits),rateLimitsByLimitId:state.data.rateLimitsByLimitId ? Object.fromEntries(Object.entries(state.data.rateLimitsByLimitId).map(([k,v])=>[k,bucket(v)])):null}:null };

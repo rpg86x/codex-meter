@@ -4,6 +4,7 @@ exports.run=async(win,app,hasClient)=>{
  const dir=path.join(app.getAppPath(),'windows','sync-check');fs.mkdirSync(dir,{recursive:true});
  const key=crypto.randomBytes(32).toString('base64url'),checks=[];
  const reading={data:{rateLimits:{planType:'plus',credits:{balance:'12.5'},primary:{usedPercent:23,windowDurationMins:300,resetsAt:Math.floor(Date.now()/1000)+3600}}},updated:Date.now(),error:null};
+ reading.data.rateLimitsByLimitId={codex:reading.data.rateLimits,base_model_inference:{limitName:'gpt-reserve',normalModelSlug:'gpt-5.6-luna',primary:{usedPercent:11,windowDurationMins:10080,resetsAt:Math.floor(Date.now()/1000)+172800},credits:null}};
  const host=createHost(key,()=>reading),js=code=>win.webContents.executeJavaScript(code);
  const check=(condition,name)=>{assert.ok(condition,name);checks.push(name);};
  try{
@@ -14,6 +15,7 @@ exports.run=async(win,app,hasClient)=>{
   check(await js(`document.querySelector('h1').textContent==='Codex Meter Sync'`),'Pairing form switches to receiver mode');
   check(!hasClient(),'Receiver does not start Codex');
   check(await js(`document.getElementById('buckets').textContent.includes('77%')`),'Receiver renders source quota');
+  check(await js(`document.querySelector('[data-reserve="luna"] .percent').textContent===t('remaining',{value:89}) && document.querySelector('[data-reserve="luna"] .reset').dataset.reset==='${reading.data.rateLimitsByLimitId.base_model_inference.primary.resetsAt}'`),'Receiver renders Luna Reserve percentage and its own reset');
   check(await js(`document.getElementById('sync-input').value===''`),'Pairing code cleared after submission');
   check(fs.readFileSync(path.join(app.getPath('userData'),'meter-sync.bin'),'utf8').indexOf(key)===-1,'Saved pairing is not plaintext');
   for(const language of ['nl','en']){await js(`setLanguage('${language}')`);check(await js(`document.getElementById('sync-state').textContent.includes('127.0.0.1')`),language+': source address retained on language switch');}

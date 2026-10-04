@@ -8,7 +8,7 @@ A compact Windows app that shows your remaining Codex allowance, extra credits, 
 
 [Download the Windows installer](https://github.com/rpg86x/codex-meter/releases/latest)
 
-Under **Assets**, download `Codex-Meter-Setup-1.3.0-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
+Under **Assets**, download `Codex-Meter-Setup-1.3.2-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
 
 Requires Windows x64. Local/source mode needs an installed Codex desktop app with an active ChatGPT sign-in. Sync receiver mode does not require Codex. **Node.js is not required to use the installer.**
 
@@ -87,7 +87,7 @@ Fork this project and add a translation to `languages.js` using the same keys as
 
 ## Codex Meter Sync: Acer to gaming PC
 
-Install version 1.3.0 or later on both computers. On the Acer (with Codex signed in), open **Codex Meter Sync**, choose **Share from this PC**, select its reachable network address, and **Copy pairing code**. On the gaming PC, paste the full code into **Pairing code from source PC** and choose **Pair**. The title changes to Codex Meter Sync. Codex is not installed or started in receiver mode.
+Install version 1.3.1 or later on both computers. On the Acer (with Codex signed in), open **Codex Meter Sync**, choose **Share from this PC**, select its reachable network address, and **Copy pairing code**. On the gaming PC, paste the full code into **Pairing code from source PC** and choose **Pair**. The title changes to Codex Meter Sync. Codex is not installed or started in receiver mode.
 
 Both machines must be reachable over the same network or an existing VPN. The Acer and Codex Meter must stay running. Allow Codex Meter through Windows Firewall on the trusted private network (TCP 43127), if prompted. No firewall rule or router forwarding is created automatically. If there are multiple addresses, select the LAN or VPN address reachable from the receiver. If the source IP changes, copy a new code. Keep both system clocks accurate.
 
@@ -96,3 +96,6 @@ The pairing code contains the source address and a random 256-bit shared key; ke
 Select **Share from this PC** again to rotate the key and disconnect all existing receivers. Choose **This PC only** to stop sharing or leave receiver mode. Last readings retain their original timestamp when the source goes offline; they are not fresh data. Preferences such as language and window size remain local. This is direct PC-to-PC snapshot sharing, without a cloud hosting subscription.
 
 Run `npm run test:sync` for encrypted transport, authentication, replay, stale-data and filtering tests. A physical two-PC test is required for your firewall and network.
+
+
+Luna Reserve is a separate quota in `rateLimitsByLimitId.base_model_inference` (reported as `gpt-reserve` with a Luna model). Version 1.3.2 shows its remaining percentage, usage bar and its own reset countdown in Dutch and English, including in Sync receiver mode. It is not a monetary or extra-credit balance. Missing usage is shown as unknown; an absent reserve bucket does not create a reserve card. Both PCs should use 1.3.2 or later. The previous 1.3.1 card relied on an unverified field and has been replaced.

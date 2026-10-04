@@ -6,4 +6,4 @@ main{padding:20px}.hero{padding:16px 20px}#credits{font-size:42px}.status{margin
 
 .sync-panel{margin-top:14px;border:1px solid #344742;border-radius:12px;padding:12px}.sync-panel summary{cursor:pointer;font-size:13px;color:#b9e4c9}.sync-panel p{margin:10px 0}.sync-panel label{display:block;font-size:12px;margin:10px 0 5px}.sync-panel input,.sync-panel select{width:100%;min-width:0;padding:10px;border:1px solid #3b5048;border-radius:8px;background:#192325;color:#eef4f2}.sync-actions{display:flex;gap:8px;flex-wrap:wrap}.sync-panel button{margin-top:8px}.sync-panel [hidden]{display:none}#sync-state{overflow-wrap:anywhere;color:#b9e4c9}
 
-.reserve{margin-top:12px;background:linear-gradient(130deg,#2d2945,#1d2434);border-color:#534c79}.reserve-value{font-size:36px;font-weight:600;letter-spacing:-1px}
+.reserve{background:linear-gradient(130deg,#2d2945,#1d2434);border-color:#534c79}

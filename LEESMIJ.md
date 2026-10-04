@@ -27,3 +27,5 @@ Click the Dutch flag (NL) or British flag (EN) at the top. The interface and res
 Werk beide computers bij naar 1.3.0. Op de Acer: open Codex Meter Sync, kies Delen vanaf deze pc, kies het bereikbare netwerkadres en kopieer de koppelcode. Op de gaming-pc: plak de code en kies Koppelen. Alleen de Acer heeft Codex nodig.
 
 Beide computers moeten bereikbaar zijn op hetzelfde netwerk of via een bestaande VPN. De Acer en de meter moeten aanstaan. Sta indien nodig TCP 43127 toe voor Codex Meter op je vertrouwde privénetwerk in Windows Firewall. Bij een veranderd IP-adres: nieuwe code kopiëren. Kies opnieuw Delen om alle oude codes in te trekken, of Alleen deze pc om delen te stoppen. Houd de code privé.
+
+Luna Reserve verschijnt vanaf 1.3.2 als afzonderlijke limiet met resterend percentage en een eigen reset-afteller, ook via Sync. Het is geen extra creditsaldo. Werk beide pc's bij naar 1.3.2. De onjuiste reservekaart uit 1.3.1 is vervangen door de echte Codex-reservelimiet.

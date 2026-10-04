@@ -10,9 +10,13 @@ test('pairing codes validate and authenticated envelopes reject tampering and re
 });
 test('two endpoints share only readings, preserve stale timestamps, reject replay, wrong codes and revoke access',async()=>{
  const secret=key();let reading={data:{accountId:'private',rateLimits:{primary:{usedPercent:23,resetsAt:1700000000,windowDurationMins:300},credits:{balance:'12.5'},token:'private'}},updated:123456,error:null};
+ const reserve={limitName:'gpt-reserve',normalModelSlug:'gpt-5.6-luna',primary:{usedPercent:11,resetsAt:1700100000,windowDurationMins:10080},secondary:null,credits:null};
+ reading.data.rateLimitsByLimitId={codex:reading.data.rateLimits,base_model_inference:{...reserve,token:'private'}};
  const server=createHost(secret,()=>reading);await new Promise(r=>server.listen(0,'127.0.0.1',r));const config={host:'127.0.0.1',port:server.address().port,key:secret};
  try{
   const received=await readRemote(config);assert.equal(received.data.rateLimits.primary.usedPercent,23);assert.equal(received.updated,123456);assert.ok(!JSON.stringify(received).includes('private'));
+  const synced=received.data.rateLimitsByLimitId.base_model_inference;
+  assert.equal(synced.normalModelSlug,reserve.normalModelSlug);assert.deepEqual(synced.primary,reserve.primary);assert.equal(synced.limitName,'gpt-reserve');assert.equal(synced.credits,null);
   reading={...reading,error:'Internal error with credentials'};const stale=await readRemote(config);assert.equal(stale.updated,123456);assert.equal(stale.error,'sync_source_error');
   await assert.rejects(()=>readRemote({...config,key:key()}));
   const request=body=>new Promise((resolve,reject)=>{const req=http.request({...config,path:'/sync',method:'POST'},res=>{res.resume();res.on('end',()=>resolve(res.statusCode));});req.on('error',reject);req.end(body);});

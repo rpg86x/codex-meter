@@ -10,6 +10,7 @@ function selectBucket(bucket) {
   if (!bucket) return null;
   return {
     limitId: bucket.limitId ?? null, limitName: bucket.limitName ?? null,
+    normalModelSlug: bucket.normalModelSlug ?? null,
     planType: bucket.planType ?? null,
     primary: selectWindow(bucket.primary), secondary: selectWindow(bucket.secondary),
     credits: bucket.credits ? {
@@ -19,16 +20,11 @@ function selectBucket(bucket) {
     } : null
   };
 }
-function selectCredits(value) {
-  if (!value || typeof value !== 'object') return null;
-  return { balance: value.balance ?? value.remaining ?? value.amount ?? null, unlimited: value.unlimited === true, hasCredits: value.hasCredits === true };
-}
 function publicUsage(raw) {
   return {
     rateLimits: selectBucket(raw.rateLimits),
     rateLimitsByLimitId: raw.rateLimitsByLimitId
-      ? Object.fromEntries(Object.entries(raw.rateLimitsByLimitId).map(([key, value]) => [key, selectBucket(value)])) : null,
-    lunaReserve: selectCredits(raw.lunaReserve || raw.luna_reserve || raw.rateLimits?.lunaReserve || raw.rateLimits?.luna_reserve || raw.credits?.lunaReserve)
+      ? Object.fromEntries(Object.entries(raw.rateLimitsByLimitId).map(([key, value]) => [key, selectBucket(value)])) : null
   };
 }
 function createService({ key, readUsage, cacheMs = 30000, now = Date.now }) {

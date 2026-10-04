@@ -65,30 +65,25 @@ function render(nextState) {
     ? Object.entries(all).sort(([a], [b]) => Number(b === 'codex') - Number(a === 'codex'))
     : [['codex', state.data.rateLimits]];
   const main = all?.codex || state.data.rateLimits;
-  const reserve = state.data.lunaReserve || main?.lunaReserve || main?.luna_reserve;
   const credits = main?.credits;
   $('plan').textContent = main?.planType || 'Codex';
   const balance = credits?.balance;
   $('credits').textContent = credits?.unlimited ? '∞' : balance == null ? '—'
     : String(balance).trim() !== '' && Number.isFinite(Number(balance)) ? number(Number(balance)) : balance;
   $('creditnote').textContent = t(!credits ? 'creditsUnavailable' : credits.unlimited ? 'unlimited' : 'creditsNote');
-  const reserveCard = $('luna-reserve');
-  reserveCard.hidden = !reserve;
-  if (reserve) {
-    reserveCard.querySelector('.reserve-value').textContent = reserve.unlimited ? '∞' : reserve.balance == null ? '—' : number(Number(reserve.balance));
-    reserveCard.querySelector('.reserve-note').textContent = t('lunaReserveNote');
-  }
   $('buckets').replaceChildren();
   for (const [id, bucket] of buckets) {
     if (!bucket) continue;
+    const reserve = (id === 'base_model_inference' || bucket.limitName === 'gpt-reserve') && (!bucket.normalModelSlug || bucket.normalModelSlug.includes('luna'));
     for (const quota of [bucket.primary, bucket.secondary]) {
       if (!quota) continue;
       const valid = typeof quota.usedPercent === 'number' && Number.isFinite(quota.usedPercent);
       const left = valid ? Math.max(0, Math.min(100, 100 - quota.usedPercent)) : null;
       const remaining = left === null ? '—' : t('remaining', { value: number(Math.round(left)) });
       const card = el('section', 'card');
+      if (reserve) { card.classList.add('reserve'); card.dataset.reserve = 'luna'; }
       const top = el('div', 'card-top');
-      top.append(el('h2', '', (id === 'codex' ? 'Codex' : bucket.limitName || id) + ' · ' + duration(quota.windowDurationMins)), el('span', 'percent', remaining));
+      top.append(el('h2', '', (reserve ? t('lunaReserveTitle') : id === 'codex' ? 'Codex' : bucket.limitName || id) + ' · ' + duration(quota.windowDurationMins)), el('span', 'percent', remaining));
       const bar = el('div', 'bar');
       const fill = el('div', 'fill');
       fill.style.width = (left ?? 0) + '%';
@@ -99,6 +94,7 @@ function render(nextState) {
       const reset = el('p', 'reset', t('resetUnknown'));
       if (quota.resetsAt) reset.dataset.reset = quota.resetsAt;
       card.append(top, bar, meta, reset);
+      if (reserve) card.append(el('p', 'small', t('lunaReserveNote')));
       $('buckets').append(card);
     }
   }

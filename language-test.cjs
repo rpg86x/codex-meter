@@ -13,23 +13,28 @@ exports.run = async (win, app) => {
   const check = (condition, label) => { assert.ok(condition, label); checks.push(label); };
   const reading = {
     updated: Date.now(), error: null,
-    data: { lunaReserve: { balance: '4.25' }, rateLimits: { planType: 'plus', credits: { balance: '12.5' },
+    data: { rateLimits: { planType: 'plus', credits: { balance: '12.5' },
       primary: { usedPercent: 23, windowDurationMins: 300, resetsAt: Math.floor(Date.now()/1000)+3600 },
       secondary: { usedPercent: 48, windowDurationMins: 10080, resetsAt: Math.floor(Date.now()/1000)+86400 }
     } }
   };
+  const reserve = { limitId:'base_model_inference', limitName:'gpt-reserve', normalModelSlug:'gpt-5.6-luna', credits:null,
+    primary:{usedPercent:11,windowDurationMins:10080,resetsAt:Math.floor(Date.now()/1000)+172800},secondary:null };
+  reading.data.rateLimitsByLimitId = { codex:reading.data.rateLimits, base_model_inference:reserve };
   try {
     assert.deepEqual(Object.keys(dictionaries.nl).sort(), Object.keys(dictionaries.en).sort());
     checks.push('Both dictionaries have the same translation keys');
     await js(`new Promise(resolve=>setTimeout(resolve,200))`);
     check(await js(`!!document.getElementById('sync-panel')`),'Sync connection panel is available');
     await js(`render(${JSON.stringify(reading)})`);
-    check(await js(`document.querySelector('#luna-reserve .reserve-value').textContent !== '—'`), 'Luna Reserve balance is visible');
+    check(await js(`document.querySelectorAll('[data-reserve="luna"]').length===1`), 'One reserve card from the real multi-bucket schema');
     for (const language of ['en', 'nl']) {
       await js(`document.querySelector('[data-language="${language}"]').click()`);
       const result = await js(`({lang:document.documentElement.lang,text:document.body.innerText,selected:document.querySelector('[data-language="${language}"]').getAttribute('aria-pressed'),flags:[...document.querySelectorAll('.languages img')].every(i=>i.complete&&i.naturalWidth>0),credits:document.getElementById('credits').textContent})`);
       check(result.lang === language && result.selected === 'true', language + ': flag switches language and selected state');
       check(result.flags, language + ': both flag images loaded');
+      check(await js(`document.querySelector('[data-reserve="luna"] h2').textContent==='Luna Reserve · '+t('week') && document.querySelector('[data-reserve="luna"] .percent').textContent===t('remaining',{value:89})`),language+': Luna Reserve shows remaining percentage, not a credit balance');
+      check(await js(`document.querySelector('[data-reserve="luna"] .reset').dataset.reset==='${reserve.primary.resetsAt}'`),language+': reserve has its own reset timestamp');
       check(await js(`document.getElementById('sync-source').textContent===t('syncSource')`),language + ': sync controls translated');
       check(result.text.includes(language === 'en' ? '77% left' : '77% over'), language + ': remaining allowance translated');
       check(result.text.includes(dictionaries[language].resetLabel), language + ': reset label translated');
@@ -45,6 +50,12 @@ exports.run = async (win, app) => {
       await js(`render(${JSON.stringify(reading)})`);
       await win.webContents.capturePage().then(image => fs.writeFileSync(path.join(output, language + '.png'), image.toPNG()));
     }
+    await js(`render(${JSON.stringify(require('./sync.cjs').snapshot(reading))})`);
+    check(await js(`document.querySelector('[data-reserve="luna"] .percent').textContent===t('remaining',{value:89}) && document.querySelector('[data-reserve="luna"] .reset').dataset.reset==='${reserve.primary.resetsAt}'`),'Sync snapshot renders identical reserve and reset');
+    await js(`render(${JSON.stringify({...reading,data:{rateLimitsByLimitId:{base_model_inference:{...reserve,primary:{...reserve.primary,usedPercent:null,resetsAt:null}}}}})})`);
+    check(await js(`document.querySelector('[data-reserve="luna"] .percent').textContent==='—' && !document.querySelector('[data-reserve="luna"] [data-reset]')`),'Unknown reserve usage and reset remain unknown');
+    await js(`render(${JSON.stringify(reading)});render({data:null,updated:null,error:null})`);
+    check(await js(`!document.querySelector('[data-reserve="luna"]')`),'Empty reading clears previous reserve');
     await js(`document.querySelector('[data-language="en"]').click()`);
     await win.loadFile(path.join(app.getAppPath(), 'index.html'));
     check(await js(`document.documentElement.lang==='en'&&localStorage.getItem('codex-meter-language')==='en'`), 'Language remains English after page reload');
