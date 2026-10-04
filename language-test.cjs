@@ -21,12 +21,15 @@ exports.run = async (win, app) => {
   try {
     assert.deepEqual(Object.keys(dictionaries.nl).sort(), Object.keys(dictionaries.en).sort());
     checks.push('Both dictionaries have the same translation keys');
+    await js(`new Promise(resolve=>setTimeout(resolve,200))`);
+    check(await js(`!!document.getElementById('sync-panel')`),'Sync connection panel is available');
     await js(`render(${JSON.stringify(reading)})`);
     for (const language of ['en', 'nl']) {
       await js(`document.querySelector('[data-language="${language}"]').click()`);
       const result = await js(`({lang:document.documentElement.lang,text:document.body.innerText,selected:document.querySelector('[data-language="${language}"]').getAttribute('aria-pressed'),flags:[...document.querySelectorAll('.languages img')].every(i=>i.complete&&i.naturalWidth>0),credits:document.getElementById('credits').textContent})`);
       check(result.lang === language && result.selected === 'true', language + ': flag switches language and selected state');
       check(result.flags, language + ': both flag images loaded');
+      check(await js(`document.getElementById('sync-source').textContent===t('syncSource')`),language + ': sync controls translated');
       check(result.text.includes(language === 'en' ? '77% left' : '77% over'), language + ': remaining allowance translated');
       check(result.text.includes(dictionaries[language].resetLabel), language + ': reset label translated');
       check(result.text.includes(language === 'en' ? 'remaining' : 'Nog '), language + ': countdown translated');
@@ -50,6 +53,7 @@ exports.run = async (win, app) => {
     check(await js(`document.getElementById('buckets').innerText==='No limits available.'&&document.getElementById('credits').textContent==='—'`), 'Missing data stays unknown');
     await js(`render(${JSON.stringify(reading)})`);
     win.setSize(350, 700);
+    await js(`document.getElementById('sync-panel').open=true`);
     await js('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
     check(await js('document.documentElement.scrollWidth<=document.documentElement.clientWidth'), 'No horizontal overflow at minimum width');
     fs.writeFileSync(path.join(output, 'result.json'), JSON.stringify({ ok: true, checks }, null, 2));

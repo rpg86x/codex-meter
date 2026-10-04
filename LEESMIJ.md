@@ -21,3 +21,9 @@ Bron: https://learn.chatgpt.com/docs/app-server
 Klik bovenin op de Nederlandse vlag (NL) of Britse vlag (EN). De interface en resetdatums veranderen direct. De taalkeuze blijft bewaard na herstarten.
 
 Click the Dutch flag (NL) or British flag (EN) at the top. The interface and reset dates update immediately. Your language choice is remembered after restarting.
+
+## Acer → gaming-pc
+
+Werk beide computers bij naar 1.3.0. Op de Acer: open Codex Meter Sync, kies Delen vanaf deze pc, kies het bereikbare netwerkadres en kopieer de koppelcode. Op de gaming-pc: plak de code en kies Koppelen. Alleen de Acer heeft Codex nodig.
+
+Beide computers moeten bereikbaar zijn op hetzelfde netwerk of via een bestaande VPN. De Acer en de meter moeten aanstaan. Sta indien nodig TCP 43127 toe voor Codex Meter op je vertrouwde privénetwerk in Windows Firewall. Bij een veranderd IP-adres: nieuwe code kopiëren. Kies opnieuw Delen om alle oude codes in te trekken, of Alleen deze pc om delen te stoppen. Houd de code privé.

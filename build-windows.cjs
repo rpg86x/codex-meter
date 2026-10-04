@@ -16,7 +16,7 @@ for (const entry of fs.readdirSync(runtime, { withFileTypes: true })) {
   const targetName = entry.name === 'electron.exe' ? 'Codex Meter.exe' : entry.name;
   fs.cpSync(path.join(runtime, entry.name), path.join(output, targetName), { recursive: true });
 }
-for (const file of ['main.cjs', 'client.cjs', 'preload.cjs', 'renderer.js', 'languages.js', 'language-test.cjs', 'tray.cjs', 'tray-test.cjs', 'flag-nl.svg', 'flag-en.svg', 'index.html', 'style.css', 'logo.png', 'package.json', 'LEESMIJ.md']) {
+for (const file of ['sync-app-test.cjs', 'sync.cjs', 'sync-controller.cjs', 'sync-ui.js', 'main.cjs', 'client.cjs', 'preload.cjs', 'renderer.js', 'languages.js', 'language-test.cjs', 'tray.cjs', 'tray-test.cjs', 'flag-nl.svg', 'flag-en.svg', 'index.html', 'style.css', 'logo.png', 'package.json', 'LEESMIJ.md']) {
   fs.copyFileSync(path.join(root, file), path.join(appDir, file));
 }
 execFileSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'build-icon.ps1')], { stdio: 'inherit', windowsHide: true });

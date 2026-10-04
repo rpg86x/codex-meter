@@ -1,6 +1,6 @@
 {
   "name": "codex-meter",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Compacte Windows-app voor Codex-tegoed, verbruik en resetmomenten",
   "main": "main.cjs",
   "private": true,
@@ -8,9 +8,10 @@
     "start": "electron .",
     "test:languages": "electron . --language-test",
     "test:tray": "electron . --tray-test",
-    "check": "node --check main.cjs && node --check client.cjs && node --check preload.cjs && node --check renderer.js && node --check languages.js && node --check build-windows.cjs",
+    "check": "node --check main.cjs && node --check client.cjs && node --check preload.cjs && node --check renderer.js && node --check languages.js && node --check build-windows.cjs && node --check sync.cjs && node --check sync-controller.cjs && node --check sync-ui.js",
     "build:windows": "node build-windows.cjs",
-    "build:installer": "npm run build:windows && electron-builder --win nsis --x64 --prepackaged windows --config installer.json --publish never"
+    "build:installer": "npm run build:windows && electron-builder --win nsis --x64 --prepackaged windows --config installer.json --publish never",
+    "test:sync": "node --test sync.test.cjs"
   },
   "devDependencies": {
     "electron": "44.4.5",

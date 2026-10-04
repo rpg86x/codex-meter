@@ -8,9 +8,9 @@ A compact Windows app that shows your remaining Codex allowance, extra credits, 
 
 [Download the Windows installer](https://github.com/rpg86x/codex-meter/releases/latest)
 
-Under **Assets**, download `Codex-Meter-Setup-1.2.0-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
+Under **Assets**, download `Codex-Meter-Setup-1.3.0-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
 
-Requires Windows x64 and an installed Codex desktop app with an active ChatGPT sign-in. **Node.js is not required to use the installer.**
+Requires Windows x64. Local/source mode needs an installed Codex desktop app with an active ChatGPT sign-in. Sync receiver mode does not require Codex. **Node.js is not required to use the installer.**
 
 The installer is not digitally signed, so Windows may display an unknown-publisher warning.
 
@@ -84,3 +84,15 @@ Use the **NL** and **EN** flag buttons at the top to switch the entire interface
 ### Add another language
 
 Fork this project and add a translation to `languages.js` using the same keys as `en`. Set `locale`, `name`, and `hourUnit`. Add a button in `index.html` with a matching `data-language` code. Include any new flag asset in the file list in `build-windows.cjs`. Missing translations fall back to English.
+
+## Codex Meter Sync: Acer to gaming PC
+
+Install version 1.3.0 or later on both computers. On the Acer (with Codex signed in), open **Codex Meter Sync**, choose **Share from this PC**, select its reachable network address, and **Copy pairing code**. On the gaming PC, paste the full code into **Pairing code from source PC** and choose **Pair**. The title changes to Codex Meter Sync. Codex is not installed or started in receiver mode.
+
+Both machines must be reachable over the same network or an existing VPN. The Acer and Codex Meter must stay running. Allow Codex Meter through Windows Firewall on the trusted private network (TCP 43127), if prompted. No firewall rule or router forwarding is created automatically. If there are multiple addresses, select the LAN or VPN address reachable from the receiver. If the source IP changes, copy a new code. Keep both system clocks accurate.
+
+The pairing code contains the source address and a random 256-bit shared key; keep it private. Requests and responses use AES-256-GCM with distinct authenticated request/response contexts, fresh nonces, request IDs and replay protection. Transport is HTTP carrying authenticated encrypted envelopes, not plaintext usage or credentials. Only filtered quota snapshots are shared. Windows DPAPI (Electron safeStorage) encrypts the saved connection on disk. The code is copied to your clipboard only when requested; clear clipboard history if you use it. Codes remain valid until revoked.
+
+Select **Share from this PC** again to rotate the key and disconnect all existing receivers. Choose **This PC only** to stop sharing or leave receiver mode. Last readings retain their original timestamp when the source goes offline; they are not fresh data. Preferences such as language and window size remain local. This is direct PC-to-PC snapshot sharing, without a cloud hosting subscription.
+
+Run `npm run test:sync` for encrypted transport, authentication, replay, stale-data and filtering tests. A physical two-PC test is required for your firewall and network.

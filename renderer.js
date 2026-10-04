@@ -42,6 +42,7 @@ function setLanguage(next) {
   render(state);
 }
 function errorText(error) {
+  if (error?.startsWith('sync_')) return t(error);
   if (error === 'connection_closed' || error?.startsWith('Codex-verbinding gesloten.')) return t('connectionError');
   if (error === 'request_timeout' || error?.startsWith('Geen antwoord van Codex')) return t('timeoutError');
   return t(error === 'action_failed' ? 'actionError' : 'genericError');
@@ -50,9 +51,10 @@ function render(nextState) {
   state = nextState;
   $('error').hidden = !state.error;
   $('error').textContent = state.error ? errorText(state.error) : '';
-  $('status').textContent = t(state.error ? 'disconnected' : state.updated ? 'connected' : 'connecting');
+  $('status').textContent = t(state.error ? 'disconnected' : state.updated ? (state.source==='remote'?'syncConnected':'connected') : 'connecting');
   $('dot').style.background = state.error ? '#e9b36c' : state.updated ? '#95e3b1' : '#7a8c87';
   if (!state.data) {
+    $('credits').textContent = '—'; $('plan').textContent = '—';
     $('buckets').replaceChildren(el('section', 'card', t('loading')));
     $('creditnote').textContent = t('creditsLoading');
     tick();
