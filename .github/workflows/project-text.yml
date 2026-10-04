@@ -1,9 +1,6 @@
 name: English project text
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/project-text.yml, .github/release-notes.md]
 permissions:
   contents: write
 jobs:

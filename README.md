@@ -6,9 +6,13 @@ A compact Windows app that shows your remaining Codex allowance, extra credits, 
 
 ## Download for Windows
 
-[Download the Windows installer](https://github.com/rpg86x/codex-meter/releases/latest)
+[Download the Windows ZIP — includes INSTALL.exe](https://github.com/rpg86x/codex-meter/releases/latest/download/Codex-Meter-Windows.zip)
 
-Under **Assets**, download `Codex-Meter-Setup-1.3.2-x64.exe`, open it, and follow the installation steps. The installer creates shortcuts on your desktop and in the Start menu.
+Download `Codex-Meter-Windows.zip`, extract it, then double-click **INSTALL.exe**. The other file, `LEESMIJ.txt`, contains Dutch and English instructions. The installer creates desktop and Start menu shortcuts.
+
+For updates, quit Codex Meter from its system tray menu and run `INSTALL.exe` again using the same Windows account and installation folder. Do not uninstall first; language and Sync settings are retained. If you previously ran a portable folder, start the installed version from its new shortcut afterwards.
+
+GitHub's green **Code > Download ZIP** button and **Source code (zip)** links contain source code. Use the Windows ZIP link above for the ready-to-install app. The original named `.exe` remains available under [release assets](https://github.com/rpg86x/codex-meter/releases/latest).
 
 Requires Windows x64. Local/source mode needs an installed Codex desktop app with an active ChatGPT sign-in. Sync receiver mode does not require Codex. **Node.js is not required to use the installer.**
 

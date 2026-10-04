@@ -1,6 +1,6 @@
 {
   "name": "codex-meter",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Compacte Windows-app voor Codex-tegoed, verbruik en resetmomenten",
   "main": "main.cjs",
   "private": true,
