@@ -13,7 +13,7 @@ exports.run = async (win, app) => {
   const check = (condition, label) => { assert.ok(condition, label); checks.push(label); };
   const reading = {
     updated: Date.now(), error: null,
-    data: { rateLimits: { planType: 'plus', credits: { balance: '12.5' },
+    data: { lunaReserve: { balance: '4.25' }, rateLimits: { planType: 'plus', credits: { balance: '12.5' },
       primary: { usedPercent: 23, windowDurationMins: 300, resetsAt: Math.floor(Date.now()/1000)+3600 },
       secondary: { usedPercent: 48, windowDurationMins: 10080, resetsAt: Math.floor(Date.now()/1000)+86400 }
     } }
@@ -24,6 +24,7 @@ exports.run = async (win, app) => {
     await js(`new Promise(resolve=>setTimeout(resolve,200))`);
     check(await js(`!!document.getElementById('sync-panel')`),'Sync connection panel is available');
     await js(`render(${JSON.stringify(reading)})`);
+    check(await js(`document.querySelector('#luna-reserve .reserve-value').textContent !== '—'`), 'Luna Reserve balance is visible');
     for (const language of ['en', 'nl']) {
       await js(`document.querySelector('[data-language="${language}"]').click()`);
       const result = await js(`({lang:document.documentElement.lang,text:document.body.innerText,selected:document.querySelector('[data-language="${language}"]').getAttribute('aria-pressed'),flags:[...document.querySelectorAll('.languages img')].every(i=>i.complete&&i.naturalWidth>0),credits:document.getElementById('credits').textContent})`);

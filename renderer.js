@@ -65,12 +65,19 @@ function render(nextState) {
     ? Object.entries(all).sort(([a], [b]) => Number(b === 'codex') - Number(a === 'codex'))
     : [['codex', state.data.rateLimits]];
   const main = all?.codex || state.data.rateLimits;
+  const reserve = state.data.lunaReserve || main?.lunaReserve || main?.luna_reserve;
   const credits = main?.credits;
   $('plan').textContent = main?.planType || 'Codex';
   const balance = credits?.balance;
   $('credits').textContent = credits?.unlimited ? '∞' : balance == null ? '—'
     : String(balance).trim() !== '' && Number.isFinite(Number(balance)) ? number(Number(balance)) : balance;
   $('creditnote').textContent = t(!credits ? 'creditsUnavailable' : credits.unlimited ? 'unlimited' : 'creditsNote');
+  const reserveCard = $('luna-reserve');
+  reserveCard.hidden = !reserve;
+  if (reserve) {
+    reserveCard.querySelector('.reserve-value').textContent = reserve.unlimited ? '∞' : reserve.balance == null ? '—' : number(Number(reserve.balance));
+    reserveCard.querySelector('.reserve-note').textContent = t('lunaReserveNote');
+  }
   $('buckets').replaceChildren();
   for (const [id, bucket] of buckets) {
     if (!bucket) continue;
